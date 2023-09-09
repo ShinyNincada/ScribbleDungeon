@@ -9,6 +9,7 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float rotationSpeed = 10f;
     bool isWalking = false;
+ 
     // Start is called before the first frame update
     void Start()
     {
@@ -61,4 +62,6 @@ public class Player : MonoBehaviour
     public bool IsWalking(){
         return isWalking;
     }
+
+   
 }
