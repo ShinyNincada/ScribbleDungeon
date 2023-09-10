@@ -5,11 +5,13 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
+    public event EventHandler OnItemPickup;
     Vector2 inputVector;
     [SerializeField] private float speed;
     [SerializeField] private float rotationSpeed = 10f;
+    [SerializeField] private LayerMask _interactableLayer;
     bool isWalking = false;
- 
+    private Interactable selectedInteractItem;
     // Start is called before the first frame update
     void Start()
     {
@@ -19,9 +21,34 @@ public class Player : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
+        InteractionHandler();
         MovementHandle();
     }
 
+    void InteractionHandler(){
+        inputVector = GameInput.Instance.GetInputVectorNormalized();
+
+        Vector3 moveDir = inputVector;
+        float checkDistance = 1f;
+        RaycastHit2D hit2D = Physics2D.Raycast(transform.position, moveDir, checkDistance, _interactableLayer);
+
+        if(hit2D) {
+            //Hit something
+            if(hit2D.transform.TryGetComponent(out Interactable interactable)) {
+                if(interactable != selectedInteractItem) {
+                    SetSelectedInteractItem(interactable);
+                }
+            }
+            else {
+                SetSelectedInteractItem(null);
+            }
+        }
+        else {
+            SetSelectedInteractItem(null);
+        }
+
+
+    }
     private void MovementHandle()
     {
         inputVector = GameInput.Instance.GetInputVectorNormalized();
@@ -29,7 +56,7 @@ public class Player : MonoBehaviour
         Vector3 moveDir = inputVector;
 
         float moveStep = speed * Time.deltaTime;
-        float playerRadius = 2f;
+        float playerRadius = 1f;
         bool canMove = !Physics2D.CircleCast(transform.position, playerRadius, moveDir, moveStep);
 
         if(!canMove) {
@@ -63,5 +90,11 @@ public class Player : MonoBehaviour
         return isWalking;
     }
 
-   
-}
+    public void SetSelectedInteractItem(Interactable newItem) {
+        selectedInteractItem = newItem;
+
+        if(newItem != null) {
+            OnItemPickup?.Invoke(this, EventArgs.Empty);
+        }
+    }
+ }
