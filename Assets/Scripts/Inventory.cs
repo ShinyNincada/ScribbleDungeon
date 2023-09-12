@@ -4,10 +4,27 @@ using UnityEngine;
 
 public class Inventory : MonoBehaviour
 {
-    public List<ItemSO> itemList = new List<ItemSO>();
+    public static Inventory Instance;
+    [SerializeField] private List<ItemSO> itemList = new List<ItemSO>();
+    [SerializeField] private int maxCapacity = 100; 
+    
+    private void Awake() {
+        if(Instance == null) {
+            Instance = this;
+        }
+        else {
+            Debug.LogError("Another instance existed!!");
+        }
+    }
 
-    public void Add(ItemSO newItem){
-        itemList.Add(newItem);
+    public bool Add(ItemSO newItem){
+        if(itemList.Count < maxCapacity) {
+            itemList.Add(newItem);
+            return true;
+        }
+        else{
+            return false;
+        }
     }
 
     public void Remove(ItemSO newItem) {

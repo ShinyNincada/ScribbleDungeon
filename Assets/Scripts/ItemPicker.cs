@@ -13,6 +13,6 @@ public class ItemPicker : Interactable
 
     void Pickup(){
         Debug.Log("Picking up!!");
-        
+        Destroy(this.gameObject);
     }
 }

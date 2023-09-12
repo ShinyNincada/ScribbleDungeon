@@ -15,8 +15,4 @@ public class Interactable : MonoBehaviour
         Debug.Log("InteractAlternate");
     }
 
-    private void OnDrawGizmosSelected() {
-        Gizmos.color = Color.green;
-        Gizmos.DrawSphere(transform.position, radius);
-    }
 }

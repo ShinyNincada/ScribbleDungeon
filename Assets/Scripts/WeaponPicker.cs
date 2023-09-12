@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WeaponPicker : Interactable
 {
+    public string animationString = "Default";
     [SerializeField] private WeaponSO weaponSO;
     public override void Interact(Player player)
     {
@@ -13,7 +14,6 @@ public class WeaponPicker : Interactable
     }
 
     void Pickup(){
-        Debug.Log("Picking up!!");
-        
-    }
+        Debug.Log("Picking Weapon up!!");
+    }    
 }
