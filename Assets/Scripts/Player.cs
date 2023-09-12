@@ -10,22 +10,33 @@ public class Player : MonoBehaviour
     [SerializeField] private float speed;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private LayerMask _interactableLayer;
+    [SerializeField] private LayerMask _playerLayer;
     bool isWalking = false;
-    private Interactable selectedInteractItem;
+    public Interactable selectedInteractItem;
+    [SerializeField] List<ItemPicker> pickableItems = new List<ItemPicker>();
+
+    
     // Start is called before the first frame update
     void Start()
     {
-        
+        GameInput.Instance.OnInteractionAction += GameInput_OnInteractionAction;
     }
+
 
     // Update is called once per frame
     void Update()
     {
-        InteractionHandler();
         MovementHandle();
+        InteractionHandle();
+        InventoryHandle();
     }
 
-    void InteractionHandler(){
+    private void InventoryHandle()
+    {
+        
+    }
+
+    void InteractionHandle(){
         inputVector = GameInput.Instance.GetInputVectorNormalized();
 
         Vector3 moveDir = inputVector;
@@ -57,7 +68,7 @@ public class Player : MonoBehaviour
 
         float moveStep = speed * Time.deltaTime;
         float playerRadius = 1f;
-        bool canMove = !Physics2D.CircleCast(transform.position, playerRadius, moveDir, moveStep);
+        bool canMove = !Physics2D.CircleCast(transform.position, playerRadius, moveDir, moveStep, ~_playerLayer);
 
         if(!canMove) {
             Vector2 moveDirX = new Vector2(moveDir.x, 0).normalized;
@@ -76,7 +87,7 @@ public class Player : MonoBehaviour
                 }
             }
         }
-        // Debug.Log(canMove);
+
         if(canMove) {
             transform.position += moveDir * moveStep;
         }
@@ -86,15 +97,40 @@ public class Player : MonoBehaviour
 
     }
 
+    private void GameInput_OnInteractionAction(object sender, EventArgs e)
+    {
+        if(pickableItems.Count > 0) {
+            ItemPicker firstItem = pickableItems[0];
+            pickableItems.RemoveAt(0);
+            firstItem.Interact(this);
+        }
+    }
+
     public bool IsWalking(){
         return isWalking;
     }
 
     public void SetSelectedInteractItem(Interactable newItem) {
         selectedInteractItem = newItem;
-
         if(newItem != null) {
+            Debug.Log(selectedInteractItem);
             OnItemPickup?.Invoke(this, EventArgs.Empty);
         }
     }
+
+    public List<ItemPicker> GetPickableItems(){
+        return pickableItems;
+    }
+
+    public void AddPickableItem(ItemPicker picker){
+        pickableItems.Add(picker);
+    }
+
+    public void RemovePickableItem(ItemPicker picker){
+        pickableItems.Remove(picker);
+    }
+  
+
  }
+
+   

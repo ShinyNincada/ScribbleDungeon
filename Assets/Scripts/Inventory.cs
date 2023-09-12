@@ -5,6 +5,7 @@ using UnityEngine;
 public class Inventory : MonoBehaviour
 {
     public List<ItemSO> itemList = new List<ItemSO>();
+    
 
     public void Add(ItemSO newItem){
         itemList.Add(newItem);
