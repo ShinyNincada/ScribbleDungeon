@@ -11,11 +11,28 @@ public class Inventory : MonoBehaviour {
         inventory_UI.SetInventory(this);
     }
     
-    public void AddItem(Item item) {
-        itemList.Add(item);
-        inventory_UI.RefreshInventoryItem();
-        Debug.Log(itemList.Count);
-        
+    public void AddItem(Item newItem) {
+        if(newItem.stackable) {
+            bool alreadyExists = false;
+            foreach(Item item in itemList){
+                if(item.itemName.ToString() == newItem.itemName.ToString()) {
+                    alreadyExists = true;
+                    item.amount += newItem.amount;
+                    break;
+                }
+            }
+            
+            if(alreadyExists == false) itemList.Add(newItem);
+        }
+        else {
+            foreach(Item item in itemList){
+                if(item.itemName.ToString() == newItem.itemName.ToString()) {
+                    return;
+                }
+            }
+            itemList.Add(newItem);
+        }
+        inventory_UI.RefreshInventoryItem();        
     }
 
     public List<Item> GetItemList(){

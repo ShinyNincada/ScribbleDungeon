@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class Item
 {
+    public ItemName itemName;
     public ItemSO itemSO;
     public int amount;
     public bool stackable;
@@ -16,6 +17,8 @@ public class Item
     {
         this.itemSO = itemSO;
         this.amount = amount;
+        itemName = itemSO.itemName;
+        stackable = itemSO.stackable;
     }
 }
 
@@ -24,4 +27,11 @@ public enum ItemType {
     Comsumable,
     Medkit,
     Coin
+}
+
+public enum ItemName {
+    Gun, 
+    Bow,
+    Bandage,
+    Trap
 }
