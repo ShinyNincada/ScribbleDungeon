@@ -12,7 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 28b98b3c8468d654aba08e3752220a65, type: 3}
   m_Name: Blue
   m_EditorClassIdentifier: 
-  itemName: Blue
+  itemName: 2
   sprite: {fileID: -396370333, guid: abade60e2af5bde43a2cec19023f75d2, type: 3}
   itemType: 0
-  stackable: 0
+  stackable: 1
