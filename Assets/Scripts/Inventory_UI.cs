@@ -17,7 +17,7 @@ public class Inventory_UI : MonoBehaviour
         foreach (Item item in inventory.GetItemList()){
             Transform spawnedMission = Instantiate(itemSlotTemplate, itemSlotCointainer);
             spawnedMission.gameObject.SetActive(true);
-            // spawnedMission.GetComponent<SingleDeliveryItemUI>().SetRecipeName(recipe);
+            spawnedMission.GetComponent<ItemAsset>().SetItem(item);
         }
     }
 
