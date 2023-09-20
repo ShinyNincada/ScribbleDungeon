@@ -6,6 +6,7 @@ using UnityEngine;
 public class GameInput : MonoBehaviour
 {
     public event EventHandler OnInteractionAction;
+    public event EventHandler OnAttackAction;
     public static GameInput Instance { get; private set; }
     public PlayerInput playerInputActions;
     Vector2 inputVector;
@@ -24,6 +25,12 @@ public class GameInput : MonoBehaviour
     void Start()
     {
         playerInputActions.Player.Interact.performed += Interact_performed;
+        playerInputActions.Player.Attack.performed += Attack_performed;
+    }
+
+    private void Attack_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)
+    {
+        OnAttackAction(this, EventArgs.Empty);
     }
 
     private void Interact_performed(UnityEngine.InputSystem.InputAction.CallbackContext context)

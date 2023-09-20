@@ -5,21 +5,31 @@ using UnityEngine;
 
 public class Player : MonoBehaviour
 {
-    public event EventHandler OnItemPickup;
     Vector2 inputVector;
     [SerializeField] private float speed;
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private LayerMask _playerLayer;
     bool isWalking = false;
-    public Interactable selectedInteractItem;
-    [SerializeField] List<ItemPicker> pickableItems = new List<ItemPicker>();
+    bool isAttacking = false;
+    PlayerAnimatorControl _animationController;
+    private Inventory _inventory;
 
     
+    private void Awake() {
+        _animationController = GetComponent<PlayerAnimatorControl>();
+        _inventory = new Inventory();
+    }
     // Start is called before the first frame update
     void Start()
     {
         GameInput.Instance.OnInteractionAction += GameInput_OnInteractionAction;
+        GameInput.Instance.OnAttackAction += GameInput_OnAttackAction;
+    }
+
+    private void GameInput_OnAttackAction(object sender, EventArgs e)
+    {
+        _animationController.TriggerAttack();
     }
 
 
@@ -40,23 +50,23 @@ public class Player : MonoBehaviour
         inputVector = GameInput.Instance.GetInputVectorNormalized();
 
         Vector3 moveDir = inputVector;
-        float checkDistance = 1f;
-        RaycastHit2D hit2D = Physics2D.Raycast(transform.position, moveDir, checkDistance, _interactableLayer);
+        // float checkDistance = 1f;
+        // RaycastHit2D hit2D = Physics2D.Raycast(transform.position, moveDir, checkDistance, _interactableLayer);
 
-        if(hit2D) {
-            //Hit something
-            if(hit2D.transform.TryGetComponent(out Interactable interactable)) {
-                if(interactable != selectedInteractItem) {
-                    SetSelectedInteractItem(interactable);
-                }
-            }
-            else {
-                SetSelectedInteractItem(null);
-            }
-        }
-        else {
-            SetSelectedInteractItem(null);
-        }
+        // if(hit2D) {
+        //     //Hit something
+        //     if(hit2D.transform.TryGetComponent(out Interactable interactable)) {
+        //         if(interactable != selectedInteractItem) {
+        //             SetSelectedInteractItem(interactable);
+        //         }
+        //     }
+        //     else {
+        //         SetSelectedInteractItem(null);
+        //     }
+        // }
+        // else {
+        //     SetSelectedInteractItem(null);
+        // }
 
 
     }
@@ -99,37 +109,20 @@ public class Player : MonoBehaviour
 
     private void GameInput_OnInteractionAction(object sender, EventArgs e)
     {
-        if(pickableItems.Count > 0) {
-            ItemPicker firstItem = pickableItems[0];
-            pickableItems.RemoveAt(0);
-            firstItem.Interact(this);
-        }
+      
     }
 
     public bool IsWalking(){
         return isWalking;
     }
 
-    public void SetSelectedInteractItem(Interactable newItem) {
-        selectedInteractItem = newItem;
-        if(newItem != null) {
-            Debug.Log(selectedInteractItem);
-            OnItemPickup?.Invoke(this, EventArgs.Empty);
-        }
+    public bool IsAttacking(){
+        return isAttacking;
     }
 
-    public List<ItemPicker> GetPickableItems(){
-        return pickableItems;
-    }
+   
+    
 
-    public void AddPickableItem(ItemPicker picker){
-        pickableItems.Add(picker);
-    }
-
-    public void RemovePickableItem(ItemPicker picker){
-        pickableItems.Remove(picker);
-    }
-  
 
  }
 
