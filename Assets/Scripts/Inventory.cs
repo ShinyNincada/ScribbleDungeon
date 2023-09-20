@@ -6,12 +6,19 @@ public class Inventory : MonoBehaviour {
     private List<Item> itemList = new List<Item>();
     [SerializeField] private Inventory_UI inventory_UI;
 
+    int currentWeaponCount = 2;
 
     private void Start() {
         inventory_UI.SetInventory(this);
     }
     
     public void AddItem(Item newItem) {
+        if(newItem.itemSO.itemType == ItemType.Weapon && currentWeaponCount < 2) {
+            
+        }
+        else {
+            return;
+        }
         if(newItem.stackable) {
             bool alreadyExists = false;
             foreach(Item item in itemList){
