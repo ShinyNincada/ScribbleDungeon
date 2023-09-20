@@ -2110,7 +2110,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSO: {fileID: 11400000, guid: 157d7193d0579fb459426e4fdfdd68fb, type: 2}
-  amount: 3
+  amount: 1
 --- !u!1 &883728347
 GameObject:
   m_ObjectHideFlags: 0
@@ -2205,7 +2205,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemSO: {fileID: 11400000, guid: bb1bfb9db9da8454d96842c707e2bbd6, type: 2}
-  amount: 3
+  amount: 1
 --- !u!61 &900717295
 BoxCollider2D:
   m_ObjectHideFlags: 0

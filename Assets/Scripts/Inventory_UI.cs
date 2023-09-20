@@ -13,7 +13,13 @@ public class Inventory_UI : MonoBehaviour
         RefreshInventoryItem();
     }
 
-    private void RefreshInventoryItem() {
+    public void RefreshInventoryItem() {
+
+        foreach (Transform child in itemSlotCointainer){
+            if (child == itemSlotTemplate) continue;
+            else Destroy(child.gameObject);
+        }
+
         foreach (Item item in inventory.GetItemList()){
             Transform spawnedMission = Instantiate(itemSlotTemplate, itemSlotCointainer);
             spawnedMission.gameObject.SetActive(true);

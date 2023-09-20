@@ -7,10 +7,14 @@ public class Inventory : MonoBehaviour {
     [SerializeField] private Inventory_UI inventory_UI;
 
 
+    private void Start() {
+        inventory_UI.SetInventory(this);
+    }
     
     public void AddItem(Item item) {
         itemList.Add(item);
-        inventory_UI.SetInventory(this);
+        inventory_UI.RefreshInventoryItem();
+        Debug.Log(itemList.Count);
         
     }
 
