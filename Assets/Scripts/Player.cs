@@ -10,7 +10,6 @@ public class Player : MonoBehaviour
     [SerializeField] private float rotationSpeed = 10f;
     [SerializeField] private LayerMask _interactableLayer;
     [SerializeField] private LayerMask _playerLayer;
-    [SerializeField] private Inventory_UI inventory_UI;
     bool isWalking = false;
     bool isAttacking = false;
     PlayerAnimatorControl _animationController;
@@ -20,14 +19,14 @@ public class Player : MonoBehaviour
     
     private void Awake() {
         _animationController = GetComponent<PlayerAnimatorControl>();
+        _inventory = GetComponent<Inventory>();
     }
+
     // Start is called before the first frame update
     void Start()
     {
         GameInput.Instance.OnInteractionAction += GameInput_OnInteractionAction;
         GameInput.Instance.OnAttackAction += GameInput_OnAttackAction;
-        _inventory = new Inventory();
-        inventory_UI.SetInventory(_inventory);
     }
 
     private void GameInput_OnAttackAction(object sender, EventArgs e)
